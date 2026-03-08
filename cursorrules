@@ -1,0 +1,25 @@
+Tu es l'assistant de développement pour le projet Yélim. Ton rôle est d'aider à maintenir et faire évoluer un écosystème complexe d'applications iOS, Android et Backend.
+
+Règle Prioritaire : Cartographie des Applications
+Avant d'effectuer une recherche, de modifier du code ou de vérifier une fonctionnalité croisée, réfère-toi TOUJOURS à la cartographie ci-dessous pour localiser le bon codebase.
+
+Backend (Firebase Functions)
+Dossier principal : /Users/burkinbila/Desktop/yelim-backend
+
+Applications iOS (Sur le Desktop)
+Yélim (Application Client) : /Users/burkinbila/Desktop/Yelim
+Yélim Admin : /Users/burkinbila/Desktop/Yelim Admin
+Yélim Livreur : /Users/burkinbila/Desktop/Yelim livreur
+Yélim Parrainage : /Users/burkinbila/Desktop/Yelim parrainage
+
+Applications Android (Dans AndroidStudioProjects)
+Yélim 3 (Application Client) : /Users/burkinbila/AndroidStudioProjects/Yelim3
+Yélim Admin : /Users/burkinbila/AndroidStudioProjects/Yelim Admmin
+Yélim Livreur : /Users/burkinbila/AndroidStudioProjects/YelimLivreur2
+Yélim Parrainage : /Users/burkinbila/AndroidStudioProjects/yelimParrainage
+
+Outils et Web (Sur le Desktop)
+Yélim VideoGen (Scripts & Modifications DB) : /Users/burkinbila/Desktop/yelimVideoGen
+Yélim Site (Site institutionnel & Légal) : /Users/burkinbila/Desktop/yelim-site
+
+Note : Ce fichier garantit la continuité du contexte entre les sessions.

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions Générales (CGV/CGU) — Yélim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --border: rgba(0, 0, 0, 0.08);
+            --accent: #007AFF;
+            --text: #1a1a1a;
+            --muted: #6e6e73;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(245, 245, 247, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.03em;
+            color: var(--text);
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .nav-back:hover {
+            opacity: 0.7;
+        }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        /* breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb svg {
+            opacity: 0.4;
+        }
+
+        /* pill */
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 122, 255, 0.08);
+            border: 1px solid rgba(0, 122, 255, 0.2);
+            color: var(--accent);
+            font-size: 0.73rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .page-title {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .last-updated {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-bottom: 40px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 36px;
+        }
+
+        /* section groups */
+        .section-group {
+            margin-bottom: 28px;
+        }
+
+        .section-group-title {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+            padding-left: 2px;
+        }
+
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 8px;
+        }
+
+        .section h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .section h3 .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 6px;
+            font-size: 0.68rem;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .section p,
+        .section li {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.75;
+        }
+
+        .section li {
+            margin-left: 18px;
+            margin-bottom: 5px;
+        }
+
+        .section ul {
+            margin-top: 8px;
+        }
+
+        .section a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .section a:hover {
+            text-decoration: underline;
+        }
+
+        /* footer */
+        .legal-footer {
+            text-align: center;
+            padding: 0 24px 56px;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .legal-footer a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .legal-footer a:hover {
+            color: var(--accent);
+        }
+
+        .legal-footer .sep {
+            margin: 0 10px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 14px 20px;
+            }
+
+            .page {
+                padding: 32px 16px 64px;
+            }
+
+            .section {
+                padding: 18px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    
+
+    <main class="page">
+        <a href="javascript:history.back()" style="display:inline-block; margin-bottom: 20px; color: #007AFF; text-decoration: none; font-weight: 600; font-family: sans-serif;">&larr; Retour</a>
+
+        
+
+        
+        <h1 class="page-title">Conditions Générales<br>d'Utilisation et de Vente</h1>
+        <p class="last-updated">Version en vigueur : 28 décembre 2025</p>
+        <div class="divider"></div>
+
+        <!-- Section I -->
+        <div class="section-group">
+            <p class="section-group-title">Section I — Dispositions Générales</p>
+
+            <div class="section">
+                <h3><span class="num">1</span>Acceptation des Conditions et Cadre Légal</h3>
+                <p>L'utilisation de l'application mobile Yélim et toute commande de produits par son intermédiaire
+                    impliquent l'acceptation pleine et entière des présentes Conditions Générales (CGU/CGV). Celles-ci
+                    régissent la relation contractuelle entre le Client et l'Éditeur.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">2</span>Identification de l'Éditeur</h3>
+                <p>Le service est opéré par l'entreprise Yélim, dont le siège social est établi à Ouagadougou, au
+                    Burkina Faso, et régie par les lois burkinabè.<br>
+                    Adresse de contact : <a href="mailto:support@yelim-solutions.com">support@yelim-solutions.com</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Section II -->
+        <div class="section-group">
+            <p class="section-group-title">Section II — Compte Utilisateur et Commandes</p>
+
+            <div class="section">
+                <h3><span class="num">3</span>Création du Compte</h3>
+                <p>Pour effectuer une commande, l'Utilisateur doit ouvrir un compte et fournir des informations
+                    complètes et exactes. La validité du numéro de téléphone est essentielle pour la bonne exécution de
+                    la livraison.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">4</span>Responsabilité du Compte</h3>
+                <p>L'Utilisateur est seul responsable de la sécurité et de la confidentialité des accès à son compte.
+                </p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">5</span>Suspension du Service</h3>
+                <p>Yélim se réserve le droit de suspendre ou de clôturer, à sa discrétion, tout compte présentant un
+                    historique d'impayés ou un risque avéré de fraude.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">6</span>Produits et Tarification</h3>
+                <ul>
+                    <li><strong>Disponibilité :</strong> Les offres de produits sont valables dans la limite des stocks.
+                    </li>
+                    <li><strong>Prix :</strong> Les prix sont exprimés en Francs CFA (XOF). Les frais de livraison sont
+                        additionnels.</li>
+                    <li><strong>Représentation :</strong> Les visuels et photos sont non contractuels.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section III -->
+        <div class="section-group">
+            <p class="section-group-title">Section III — Modalités de Paiement</p>
+
+            <div class="section">
+                <h3><span class="num">7</span>Options de Paiement Standard</h3>
+                <p>Le règlement est possible via Mobile Money (Orange Money, Moov Money, Wave). Tous les articles sont
+                    payés avant d'être livrés.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">8</span>Clause de Non-Responsabilité Mobile Money</h3>
+                <p>Yélim n'est pas responsable des incidents financiers imputables directement aux opérateurs de
+                    téléphonie.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">9</span>Paiement Progressif (Paiement en Plusieurs Fois)</h3>
+                <p>Ce dispositif est encadré par une majoration forfaitaire de 10% pour frais de gestion. En cas
+                    d'annulation après 30 jours de retard, Yélim conserve ces 10% à titre de pénalité.</p>
+            </div>
+        </div>
+
+        <!-- Section IV -->
+        <div class="section-group">
+            <p class="section-group-title">Section IV — Livraison et Risques de Transport</p>
+
+            <div class="section">
+                <h3><span class="num">10</span>Livraison Locale (Ouagadougou)</h3>
+                <p>La responsabilité de Yélim couvre le colis jusqu'à sa remise effective au Client.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">11</span>Expéditions Inter-urbaines</h3>
+                <p>La responsabilité de Yélim prend fin dès la remise du colis à la compagnie de transport partenaire.
+                </p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">12</span>Vérification de la Réception</h3>
+                <p>Le Client doit vérifier l'intégrité du colis au moment du retrait. L'absence de réserve vaut
+                    acceptation.</p>
+            </div>
+        </div>
+
+        <!-- Section V -->
+        <div class="section-group">
+            <p class="section-group-title">Section V — Politique de Litiges et Remboursement</p>
+
+            <div class="section">
+                <h3><span class="num">13</span>Perte par Service Interne Yélim</h3>
+                <p>Seule la perte par un livreur interne engagera Yélim à procéder au remplacement ou remboursement.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">14</span>Modalités et Délais de Remboursement</h3>
+                <p>Aucun remboursement en espèces n'est effectué immédiatement. Le délai de traitement est de 14 à 30
+                    jours ouvrables via Mobile Money.</p>
+            </div>
+        </div>
+
+        <!-- Section VI -->
+        <div class="section-group">
+            <p class="section-group-title">Section VI — Dispositions Finales</p>
+
+            <div class="section">
+                <h3><span class="num">15</span>Force Majeure</h3>
+                <p>Yélim n'est pas responsable de l'inexécution causée par un événement de force majeure. Ceci inclut,
+                    sans s'y limiter : les catastrophes naturelles (inondations, séismes), les troubles sociaux (grèves,
+                    émeutes), les défaillances d'infrastructures (coupures internet ou électricité prolongées), ou toute
+                    décision gouvernementale ou crise sanitaire majeure hors de notre contrôle.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">16</span>Données Personnelles</h3>
+                <p>Traitées selon les termes de notre <a href="/legal/privacy.html">Politique de Confidentialité</a>.
+                </p>
+            </div>
+
+            <div class="section">
+                <h3><span class="num">17</span>Droit Applicable et Juridiction</h3>
+                <p>Régies par le droit du Burkina Faso. Compétence exclusive des tribunaux de Ouagadougou.</p>
+            </div>
+        </div>
+    </main>
+
+    
+
+</body>
+
+</html>

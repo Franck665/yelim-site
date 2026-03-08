@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.s1.yelim",
+            "sha256_cert_fingerprints": [
+                "6A:48:36:1E:E4:CD:7B:85:8F:A2:AB:B5:D3:72:D4:2F:8F:51:89:11:37:6C:8B:3A:AD:13:77:C3:1B:27:F3:08"
+            ]
+        }
+    }
+]

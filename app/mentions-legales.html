@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentions Légales / Legal Notices — YELIM SOLUTIONS</title>
+    <meta name="description"
+        content="Mentions légales et informations juridiques officielles de YELIM SOLUTIONS — Legal notices and official company information.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #151515;
+            --surface: #1e1e1e;
+            --border: rgba(255, 255, 255, 0.07);
+            --accent: #007AFF;
+            --accent-2: #FF6B35;
+            --text: #f0f0f5;
+            --muted: rgba(240, 240, 245, 0.45);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* blobs */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.12), transparent 70%);
+            top: -150px;
+            right: -100px;
+        }
+
+        .blob-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08), transparent 70%);
+            bottom: 100px;
+            left: -80px;
+        }
+
+        /* nav */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.03em;
+            color: var(--text);
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.83rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-back:hover {
+            color: var(--text);
+        }
+
+        /* page wrapper */
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 64px 40px 80px;
+        }
+
+        /* lang toggle */
+        .lang-toggle {
+            display: inline-flex;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+            margin-bottom: 48px;
+        }
+
+        .lang-btn {
+            padding: 7px 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            transition: all 0.2s;
+            letter-spacing: 0.03em;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* header block */
+        .page-header {
+            margin-bottom: 56px;
+        }
+
+        .page-eyebrow {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .page-title {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 300;
+            max-width: 480px;
+        }
+
+        /* company card */
+        .company-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 40px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent 60%);
+        }
+
+        .company-card-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 28px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 40px;
+        }
+
+        .info-item {}
+
+        .info-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .info-value a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .info-value a:hover {
+            opacity: 0.8;
+        }
+
+        /* section */
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legal-section-title i {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 122, 255, 0.12);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .legal-section p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.75;
+            font-weight: 300;
+        }
+
+        .legal-section p+p {
+            margin-top: 10px;
+        }
+
+        /* divider */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 48px 0;
+        }
+
+        /* lang sections */
+        .lang-section {
+            display: none;
+        }
+
+        .lang-section.visible {
+            display: block;
+        }
+
+        /* update notice */
+        .update-notice {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px 14px;
+            margin-top: 48px;
+        }
+
+        /* footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 40px;
+            max-width: 820px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-copy {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+
+        /* responsive */
+        @media (max-width: 640px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            .page {
+                padding: 40px 20px 60px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .company-card {
+                padding: 28px 24px;
+            }
+
+            footer {
+                padding: 28px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- NAV -->
+    
+
+    <!-- CONTENT -->
+    <main class="page">
+        <a href="javascript:history.back()" style="display:inline-block; margin-bottom: 20px; color: #007AFF; text-decoration: none; font-weight: 600; font-family: sans-serif;">&larr; Retour</a>
+
+
+        <!-- Lang toggle -->
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="setLang('fr')" id="btn-fr">FR — Français</button>
+            <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN — English</button>
+        </div>
+
+        <!-- ═══════════════════════════════════ FRENCH ═══════════════════════════════════ -->
+        <div class="lang-section visible" id="lang-fr">
+
+            <div class="page-header">
+                <div class="page-eyebrow">Informations Juridiques</div>
+                <h1 class="page-title">Mentions Légales</h1>
+                <p class="page-subtitle">Conformément aux dispositions légales en vigueur, vous trouverez ci-dessous les
+                    informations juridiques officielles relatives à YELIM SOLUTIONS.</p>
+            </div>
+
+            <!-- Company card -->
+            <div class="company-card">
+                <div class="company-card-title">Identification de l'entreprise</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Dénomination sociale</div>
+                        <div class="info-value">YELIM SOLUTIONS</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Forme juridique</div>
+                        <div class="info-value">Entreprise Individuelle (EI)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Promoteur</div>
+                        <div class="info-value">Nikiema Francois de salle</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Siège social</div>
+                        <div class="info-value">S/C 11 BP 160 CMS OUAGA 11<br>Ouagadougou, Burkina Faso</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">RCCM</div>
+                        <div class="info-value">BF-OUA-01-2026-A10-02851</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">IFU (Identifiant Fiscal Unique)</div>
+                        <div class="info-value">00301520M</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value"><a
+                                href="mailto:contact@yelim-solutions.com">contact@yelim-solutions.com</a></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Téléphone</div>
+                        <div class="info-value"><a href="tel:+22660571096">+226 60 57 10 96</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sections -->
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-globe"></i>
+                    Éditeur du site
+                </h2>
+                <p>Le site <strong>yelim-solutions.com</strong> est édité par YELIM SOLUTIONS, Entreprise Individuelle
+                    (EI) immatriculée au Registre du Commerce et du Crédit Mobilier (RCCM) de Ouagadougou sous le numéro
+                    <strong>BF-OUA-01-2026-A10-02851</strong>.</p>
+                <p>Directeur de la publication : Nikiema Francois de salle.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-mobile-screen"></i>
+                    Activité
+                </h2>
+                <p>YELIM SOLUTIONS développe et exploite l'application mobile <strong>Yélim</strong>, une plateforme de
+                    commerce électronique dédiée au marché burkinabè. Elle met en relation vendeurs locaux et acheteurs
+                    via une expérience mobile sur iOS et Android, avec paiement intégré Mobile Money en FCFA.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-envelope"></i>
+                    Contact
+                </h2>
+                <p>Pour toute question relative au fonctionnement du site ou de l'application, vous pouvez nous
+                    contacter :</p>
+                <p>
+                    <strong>Email :</strong> <a href="mailto:contact@yelim-solutions.com"
+                        style="color:var(--accent)">contact@yelim-solutions.com</a><br>
+                    <strong>Téléphone :</strong> <a href="tel:+22660571096" style="color:var(--accent)">+226 60 57 10
+                        96</a><br>
+                    <strong>Adresse :</strong> S/C 11 BP 160 CMS OUAGA 11, Ouagadougou, Burkina Faso
+                </p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-lock"></i>
+                    Données personnelles
+                </h2>
+                <p>Le traitement des données à caractère personnel est régi par notre <a href="/legal/privacy.html"
+                        style="color:var(--accent)">Politique de Confidentialité</a>. YELIM SOLUTIONS s'engage à
+                    respecter la vie privée des utilisateurs et à traiter leurs données conformément à la réglementation
+                    applicable au Burkina Faso.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-scale-balanced"></i>
+                    Propriété intellectuelle
+                </h2>
+                <p>L'ensemble des éléments constituant ce site (textes, images, graphismes, logo, icônes, sons,
+                    logiciels, etc.) est la propriété exclusive de YELIM SOLUTIONS. Toute reproduction, représentation,
+                    modification ou exploitation non autorisée de ces éléments est strictement interdite.</p>
+            </div>
+
+            <div class="update-notice">
+                <i class="fas fa-clock"></i>
+                Dernière mise à jour : Mars 2026
+            </div>
+
+        </div><!-- /lang-fr -->
+
+        <!-- ═══════════════════════════════════ ENGLISH ══════════════════════════════════ -->
+        <div class="lang-section" id="lang-en">
+
+            <div class="page-header">
+                <div class="page-eyebrow">Legal Information</div>
+                <h1 class="page-title">Legal Notices</h1>
+                <p class="page-subtitle">In accordance with applicable legal requirements, the following provides the
+                    official legal information for YELIM SOLUTIONS.</p>
+            </div>
+
+            <!-- Company card -->
+            <div class="company-card">
+                <div class="company-card-title">Company Identification</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Company Name</div>
+                        <div class="info-value">YELIM SOLUTIONS</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Legal Structure</div>
+                        <div class="info-value">Sole Proprietorship (Entreprise Individuelle — EI)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Owner / Operator</div>
+                        <div class="info-value">Nikiema Francois de salle</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Registered Address</div>
+                        <div class="info-value">S/C 11 BP 160 CMS OUAGA 11<br>Ouagadougou, Burkina Faso</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">RCCM (Trade Register No.)</div>
+                        <div class="info-value">BF-OUA-01-2026-A10-02851</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">IFU (Tax Identification No.)</div>
+                        <div class="info-value">00301520M</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value"><a
+                                href="mailto:contact@yelim-solutions.com">contact@yelim-solutions.com</a></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value"><a href="tel:+22660571096">+226 60 57 10 96</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sections -->
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-globe"></i>
+                    Website Publisher
+                </h2>
+                <p>The website <strong>yelim-solutions.com</strong> is published by YELIM SOLUTIONS, a Sole
+                    Proprietorship (Entreprise Individuelle) registered with the Trade and Secured Transactions Register
+                    (RCCM) of Ouagadougou under number <strong>BF-OUA-01-2026-A10-02851</strong>.</p>
+                <p>Publication Director: Nikiema Francois de salle.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-mobile-screen"></i>
+                    Business Activity
+                </h2>
+                <p>YELIM SOLUTIONS develops and operates the <strong>Yélim</strong> mobile application, an e-commerce
+                    platform dedicated to the Burkinabè market. It connects local merchants and buyers through a
+                    mobile-first experience on iOS and Android, with integrated Mobile Money payments in CFA Franc
+                    (FCFA).</p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-envelope"></i>
+                    Contact
+                </h2>
+                <p>For any question regarding the website or the application, please contact us:</p>
+                <p>
+                    <strong>Email:</strong> <a href="mailto:contact@yelim-solutions.com"
+                        style="color:var(--accent)">contact@yelim-solutions.com</a><br>
+                    <strong>Phone:</strong> <a href="tel:+22660571096" style="color:var(--accent)">+226 60 57 10
+                        96</a><br>
+                    <strong>Address:</strong> S/C 11 BP 160 CMS OUAGA 11, Ouagadougou, Burkina Faso
+                </p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-lock"></i>
+                    Personal Data
+                </h2>
+                <p>The processing of personal data is governed by our <a href="/legal/privacy.html"
+                        style="color:var(--accent)">Privacy Policy</a>. YELIM SOLUTIONS is committed to protecting user
+                    privacy and handling data in accordance with applicable regulations in Burkina Faso.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2 class="legal-section-title">
+                    <i class="fas fa-scale-balanced"></i>
+                    Intellectual Property
+                </h2>
+                <p>All elements of this website (texts, images, graphics, logo, icons, sounds, software, etc.) are the
+                    exclusive property of YELIM SOLUTIONS. Any unauthorized reproduction, representation, modification
+                    or use of these elements is strictly prohibited.</p>
+            </div>
+
+            <div class="update-notice">
+                <i class="fas fa-clock"></i>
+                Last updated: March 2026
+            </div>
+
+        </div><!-- /lang-en -->
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-copy">© 2026 YELIM SOLUTIONS. Tous droits réservés / All rights reserved.</div>
+        <div class="footer-links">
+            <a href="/legal/privacy.html">Confidentialité</a>
+            <a href="/legal/terms.html">Conditions</a>
+            <a href="/">Accueil</a>
+        </div>
+    </footer>
+
+    <script>
+        function setLang(lang) {
+            document.getElementById('lang-fr').classList.toggle('visible', lang === 'fr');
+            document.getElementById('lang-en').classList.toggle('visible', lang === 'en');
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.documentElement.lang = lang;
+        }
+    </script>
+</body>
+
+</html>

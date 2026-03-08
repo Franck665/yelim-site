@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de Confidentialité — Yélim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --border: rgba(0, 0, 0, 0.08);
+            --accent: #007AFF;
+            --text: #1a1a1a;
+            --muted: #6e6e73;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(245, 245, 247, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.03em;
+            color: var(--text);
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .nav-back:hover {
+            opacity: 0.7;
+        }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        /* breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb svg {
+            opacity: 0.4;
+        }
+
+        /* pill */
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 122, 255, 0.08);
+            border: 1px solid rgba(0, 122, 255, 0.2);
+            color: var(--accent);
+            font-size: 0.73rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        /* title */
+        .page-title {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .last-updated {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-bottom: 40px;
+        }
+
+        /* divider */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 40px;
+        }
+
+        /* sections */
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 12px;
+        }
+
+        .section h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 7px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .section h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #3a3a3c;
+            margin: 16px 0 6px;
+        }
+
+        .section p,
+        .section li {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.75;
+        }
+
+        .section li {
+            margin-left: 18px;
+            margin-bottom: 5px;
+        }
+
+        .section a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .section a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* contact card */
+        .contact-card {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            background: rgba(0, 122, 255, 0.05);
+            border: 1px solid rgba(0, 122, 255, 0.15);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 14px;
+        }
+
+        .contact-card .icon {
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .contact-card p {
+            margin: 0 !important;
+        }
+
+        /* footer */
+        .legal-footer {
+            text-align: center;
+            padding: 0 24px 56px;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .legal-footer a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .legal-footer a:hover {
+            color: var(--accent);
+        }
+
+        .legal-footer .sep {
+            margin: 0 10px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 14px 20px;
+            }
+
+            .page {
+                padding: 32px 16px 64px;
+            }
+
+            .section {
+                padding: 20px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="/" class="logo">
+            <img src="/assets/yelim_solutions_logo_finale.jpg" alt="Yélim">
+            <span class="logo-text">YÉLIM</span>
+        </a>
+        <a href="/" class="nav-back">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            Retour au site
+        </a>
+    </nav>
+
+    <main class="page">
+        <nav class="breadcrumb" aria-label="breadcrumb">
+            <a href="/">Accueil</a>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            <span>Confidentialité</span>
+        </nav>
+
+        <div class="tag-pill"><span></span>Légal</div>
+        <h1 class="page-title">Politique de<br>Confidentialité</h1>
+        <p class="last-updated">Dernière mise à jour : Mars 2026</p>
+        <div class="divider"></div>
+
+        <div class="section">
+            <h2><span class="num">1</span>Introduction</h2>
+            <p>Bienvenue sur Yélim. La protection de vos données personnelles est une priorité absolue pour nous. Cette
+                politique de confidentialité détaille en toute transparence comment nous collectons, utilisons et
+                protégeons vos informations lors de l'utilisation de notre application de e-commerce.</p>
+        </div>
+
+        <div class="section">
+            <h2><span class="num">2</span>Les Données que nous collectons</h2>
+            <h3>2.1. Informations fournies volontairement</h3>
+            <ul>
+                <li><strong>Informations de compte :</strong> Nom, prénoms, numéro de téléphone (pour l'authentification
+                    et le contact).</li>
+                <li><strong>Informations de livraison :</strong> Ville, quartier, indications de lieu.</li>
+                <li><strong>Contenu utilisateur :</strong> Photos téléchargées pour la recherche visuelle ou les avis
+                    produits.</li>
+            </ul>
+            <h3>2.2. Informations techniques</h3>
+            <p>Pour assurer la stabilité de l'application, nous collectons des données techniques anonymes telles que le
+                modèle de l'appareil, la version du système d'exploitation et les rapports de crash.</p>
+            <h3>2.3. Accès à la Caméra et à la Galerie</h3>
+            <p>L'accès à votre caméra ou à votre galerie photo est requis uniquement si vous utilisez la fonctionnalité
+                de "Recherche par image". Ces images sont traitées instantanément pour trouver des produits
+                correspondants et ne sont pas conservées à d'autres fins.</p>
+            <h3>2.4. Données de Localisation (GPS)</h3>
+            <p>Nous collectons vos données de localisation précise (coordonnées GPS) uniquement lorsque vous utilisez
+                activement la fonctionnalité "Envoyer ma position actuelle" lors de la définition de votre adresse de
+                livraison.</p>
+            <ul>
+                <li>Cette collecte n'est activée que par votre action explicite (clic sur le bouton).</li>
+                <li>Nous ne suivons jamais votre position en arrière-plan lorsque l'application est fermée.</li>
+                <li>Ces données servent exclusivement à garantir que le livreur trouve votre emplacement exact.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="num">3</span>Utilisation de vos données</h2>
+            <p>Vos données sont utilisées exclusivement pour les finalités suivantes :</p>
+            <ul>
+                <li><strong>Vérification de votre identité :</strong> Lors de la création de compte ou de la connexion,
+                    votre numéro de téléphone est utilisé pour vous envoyer un code à usage unique (SMS) afin de
+                    confirmer que vous êtes bien le titulaire du numéro.</li>
+                <li><strong>Traitement des commandes :</strong> Valider et préparer vos achats, ainsi que traiter vos
+                    paiements de manière sécurisée.</li>
+                <li><strong>Livraison :</strong> Guider le livreur vers votre emplacement précis grâce aux coordonnées
+                    GPS fournies.</li>
+                <li><strong>Support client :</strong> Vous contacter en cas de problème avec une commande.</li>
+                <li><strong>Sécurité :</strong> Vérifier les transactions pour prévenir la fraude.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="num">4</span>Partage des données avec des tiers</h2>
+            <p>Nous ne vendons aucune donnée personnelle. Vos informations sont partagées uniquement avec les
+                prestataires nécessaires au fonctionnement du service :</p>
+            <ul>
+                <li><strong>Vérification par SMS (Ikoddi / Kreezus) :</strong> Pour confirmer votre numéro de téléphone
+                    lors de la connexion ou de la création de compte, nous transmettons ce numéro à
+                    <strong>Ikoddi</strong>, un service d'envoi de SMS opéré par la société <strong>Kreezus</strong>
+                    (Burkina Faso). Ikoddi l'utilise uniquement pour vous envoyer le code de vérification à usage
+                    unique. Ce numéro n'est pas exploité à d'autres fins par ce prestataire.
+                </li>
+                <li><strong>Logistique et Livreurs :</strong> Votre nom, numéro de téléphone et vos coordonnées GPS sont
+                    transmis au livreur assigné à votre commande afin d'assurer la livraison.</li>
+                <li><strong>Services de Cartographie :</strong> Pour afficher votre position sur la carte dans
+                    l'application, nous utilisons les services de Google Maps (Android) et Apple Maps (iOS).</li>
+                <li><strong>Moyens de paiement mobiles locaux :</strong> Pour les paiements via Orange Money, Moov
+                    Money, Wave ou Sank, l'utilisateur effectue un transfert direct traditionnel. Ces transactions sont
+                    traitées par les systèmes des opérateurs concernés sans intervention technique directe de Yélim.
+                </li>
+                <li><strong>Paiement par OTP (via Agrégateur YengaPay) :</strong> Si vous choisissez l'option de
+                    paiement par OTP, celui-ci sera effectué via l'agrégateur <strong>YengaPay</strong>. Votre numéro de
+                    téléphone et le montant de la transaction sont alors transmis de manière sécurisée pour initier et
+                    valider le paiement.</li>
+                <li><strong>Hébergement Cloud :</strong> Vos données sont stockées de manière sécurisée sur des
+                    infrastructures cloud certifiées (ex: Google Cloud / Firebase).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="num">5</span>Sécurité des données</h2>
+            <p>Nous appliquons des standards de sécurité rigoureux. Toutes les communications entre l'application et nos
+                serveurs sont chiffrées (protocole HTTPS/TLS).</p>
+        </div>
+
+        <div class="section">
+            <h2><span class="num">6</span>Vos droits et Suppression de compte</h2>
+            <p>Vous pouvez demander la suppression complète de votre compte et de toutes les données associées
+                directement depuis les paramètres de l'application (<span class="highlight">"Profil" › "Supprimer mon
+                    compte"</span>) ou en nous contactant.</p>
+        </div>
+
+        <div class="section">
+            <h2><span class="num">7</span>Contact</h2>
+            <p>Pour toute question concernant cette politique ou vos données personnelles :</p>
+            <div class="contact-card">
+                <span class="icon">✉️</span>
+                <p><a href="mailto:support@yelim-solutions.com">support@yelim-solutions.com</a><br>
+                    <span style="font-size:0.82rem;">📍 Ouagadougou, Burkina Faso</span>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="legal-footer">
+        © 2026 YELIM SOLUTIONS
+        <span class="sep">·</span>
+        <a href="/legal/privacy.html">Confidentialité</a>
+        <span class="sep">·</span>
+        <a href="/legal/terms.html">Conditions</a>
+        <span class="sep">·</span>
+        <a href="/legal/support.html">Support</a>
+    </footer>
+
+</body>
+
+</html>
