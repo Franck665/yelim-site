@@ -1,13 +1,15 @@
 [
     {
         "relation": [
-            "delegate_permission/common.handle_all_urls"
+            "delegate_permission/common.handle_all_urls",
+            "delegate_permission/common.get_login_creds"
         ],
         "target": {
             "namespace": "android_app",
             "package_name": "com.s1.yelim",
             "sha256_cert_fingerprints": [
-                "6A:48:36:1E:E4:CD:7B:85:8F:A2:AB:B5:D3:72:D4:2F:8F:51:89:11:37:6C:8B:3A:AD:13:77:C3:1B:27:F3:08"
+                "6A:48:36:1E:E4:CD:7B:85:8F:A2:AB:B5:D3:72:D4:2F:8F:51:89:11:37:6C:8B:3A:AD:13:77:C3:1B:27:F3:08",
+                "8B:AE:B6:AE:87:BD:66:92:29:16:00:F6:03:C2:2A:59:E5:CF:67:15:9C:9A:82:7E:50:96:A9:51:A8:37:80:73"
             ]
         }
     }

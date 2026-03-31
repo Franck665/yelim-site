@@ -69,7 +69,7 @@
         function redirect() {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
             var iosLink = "https://apps.apple.com/app/id6758163762"; // ID mis à jour
-            var androidLink = "https://play.google.com/store/apps/details?id=com.yelim.app"; // À mettre à jour
+            var androidLink = "https://play.google.com/store/apps/details?id=com.s1.yelim";
 
             // Si on est sur cette page, c'est que l'Universal Link n'a pas ouvert l'app !
             // On peut tenter d'ouvrir le deep link classique yelim:// ou rediriger vers le store
@@ -77,14 +77,17 @@
             // Tentative d'ouverture via URI scheme personnalisé
             var urlParams = new URLSearchParams(window.location.search);
             var articleId = urlParams.get('id');
-            var customSchemeUrl = "yelim://share/" + articleId;
+            var customSchemeUrl = "yelim://article/" + articleId;
 
             // On essaie d'ouvrir l'app via le custom scheme, et on se replie sur le store
             setTimeout(function () {
                 if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                     window.location.href = iosLink;
                 } else if (/android/i.test(userAgent)) {
-                    window.location.href = androidLink;
+                    window.location.href = "market://details?id=com.s1.yelim";
+                    setTimeout(function () {
+                        window.location.href = androidLink;
+                    }, 500);
                 }
             }, 500);
 
@@ -101,7 +104,7 @@
         <p>Ouverture de l'article...</p>
         <p style="font-size: 0.9em; margin-bottom: 1rem;">Si vous n'avez pas l'application :</p>
         <a href="https://apps.apple.com/app/id6758163762" class="btn" id="ios-btn">Télécharger sur l'App Store</a>
-        <a href="https://play.google.com/store/apps/details?id=com.yelim.app" class="btn" id="android-btn">Télécharger
+        <a href="https://play.google.com/store/apps/details?id=com.s1.yelim" class="btn" id="android-btn">Télécharger
             sur le Play Store</a>
     </div>
 </body>

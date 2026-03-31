@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph / Social sharing (TikTok, WhatsApp, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Yélim">
+    <meta property="og:title" content="Événement Yélim — Offre limitée">
+    <meta property="og:description" content="Stocks limités · Livraison rapide. Profitez de cette offre exclusive sur l'app Yélim.">
+    <meta property="og:image" content="https://yelim-solutions.com/assets/og-default.png">
+    <meta property="og:url" id="og-url" content="https://yelim-solutions.com/evenement">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Événement Yélim — Offre limitée">
+    <meta name="twitter:description" content="Stocks limités · Livraison rapide. Profitez de cette offre exclusive sur l'app Yélim.">
+    <meta name="twitter:image" content="https://yelim-solutions.com/assets/og-default.png">
+
+    <title>Événement — Yélim</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 24px;
+        }
+        .card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .event-badge {
+            display: inline-block;
+            background: #FF3B30;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #000;
+            border-radius: 18px;
+            margin: 0 auto 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #65676b;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #000;
+            color: white;
+            text-decoration: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 0.875rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn:active { opacity: 0.85; transform: scale(0.98); }
+        .btn.secondary {
+            background: #f0f2f5;
+            color: #1a1a1a;
+        }
+        .divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 1.25rem 0;
+        }
+        .opening {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
+    <script>
+        var eventId = null;
+
+        function getEventId() {
+            var params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        function redirect() {
+            eventId = getEventId();
+            if (!eventId) return;
+
+            // Update OG url
+            document.getElementById('og-url').setAttribute('content', window.location.href);
+
+            var iosStore = "https://apps.apple.com/app/id6758163762";
+            var androidStore = "https://play.google.com/store/apps/details?id=com.s1.yelim";
+            var deepLink = "yelim://evenement/" + eventId;
+
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+            var isAndroid = /android/i.test(ua);
+
+            // Try deep link, fall back to store after 1.5s
+            if (isIOS || isAndroid) {
+                var fallbackTimer = setTimeout(function () {
+                    if (isAndroid) {
+                        window.location.href = "market://details?id=com.s1.yelim";
+                        setTimeout(function () { window.location.href = androidStore; }, 500);
+                    } else {
+                        window.location.href = iosStore;
+                    }
+                }, 1500);
+
+                window.addEventListener('blur', function () {
+                    clearTimeout(fallbackTimer);
+                });
+
+                window.location.href = deepLink;
+            }
+        }
+
+        window.onload = redirect;
+    </script>
+</head>
+
+<body>
+    <div class="card">
+        <span class="event-badge">⚡ Offre limitée</span>
+        <div class="logo">Y</div>
+        <h1>Yélim</h1>
+        <p class="subtitle">
+            Voir les articles de cet événement<br>et profitez des stocks limités.
+        </p>
+
+        <a href="https://apps.apple.com/app/id6758163762" class="btn" id="ios-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Voir sur l'App Store
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.s1.yelim" class="btn secondary" id="android-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M3.18 23.76c.35.19.74.19 1.07.02l11.65-6.63-2.52-2.52-10.2 9.13zm16.53-10.2L17.09 12l2.62-1.56-7.92-4.5-2.56 2.56 10.48 5.06zM3.18.24C2.8.43 2.57.83 2.57 1.31v21.38c0 .48.23.88.61 1.07l.1.05 11.98-11.98v-.28L3.28.19l-.1.05zm13.53 12.24l-2.63 1.56 2.63 1.56 3.9-2.21c1.12-.64 1.12-1.67 0-2.3l-3.9-2.22-2.63 1.56 2.63 1.56v1.49z"/></svg>
+            Voir sur Google Play
+        </a>
+
+        <div class="divider"></div>
+        <p class="opening" id="status-text">Ouverture de l'application en cours...</p>
+    </div>
+</body>
+
+</html>
