@@ -159,14 +159,9 @@
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="/__/firebase/init.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script>
-        firebase.initializeApp({
-            apiKey: "AIzaSyByUL9k7rf1ETGd_tJ4ybXXWsc41rY6DhQ",
-            authDomain: "school-hub-bdf8f.firebaseapp.com",
-            projectId: "school-hub-bdf8f"
-        });
-
         const auth = firebase.auth();
         const params = new URLSearchParams(window.location.search);
         const mode = params.get('mode');
