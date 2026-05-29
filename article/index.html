@@ -68,8 +68,11 @@
     <script>
         function redirect() {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            var iosLink = "https://apps.apple.com/app/id6758163762"; // ID mis à jour
+            var iosLink = "https://apps.apple.com/app/y%C3%A9lim/id6758163762";
             var androidLink = "https://play.google.com/store/apps/details?id=com.s1.yelim";
+            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            var isIPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+            var isAndroid = /android/i.test(userAgent);
 
             // Si on est sur cette page, c'est que l'Universal Link n'a pas ouvert l'app !
             // On peut tenter d'ouvrir le deep link classique yelim:// ou rediriger vers le store
@@ -77,19 +80,33 @@
             // Tentative d'ouverture via URI scheme personnalisé
             var urlParams = new URLSearchParams(window.location.search);
             var articleId = urlParams.get('id');
+            var action = urlParams.get('action');
             var customSchemeUrl = "yelim://article/" + articleId;
+            if (action) {
+                customSchemeUrl += "?action=" + encodeURIComponent(action);
+            }
 
             // On essaie d'ouvrir l'app via le custom scheme, et on se replie sur le store
-            setTimeout(function () {
-                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            var fallbackTimer = setTimeout(function () {
+                if (isIOS || isIPadOS) {
                     window.location.href = iosLink;
-                } else if (/android/i.test(userAgent)) {
+                } else if (isAndroid) {
                     window.location.href = "market://details?id=com.s1.yelim";
                     setTimeout(function () {
                         window.location.href = androidLink;
                     }, 500);
                 }
-            }, 500);
+            }, 1500);
+
+            function clearFallback() {
+                clearTimeout(fallbackTimer);
+            }
+
+            window.addEventListener('blur', clearFallback);
+            window.addEventListener('pagehide', clearFallback);
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) clearFallback();
+            });
 
             window.location.href = customSchemeUrl;
         }
@@ -103,7 +120,7 @@
         <h1>Yélim</h1>
         <p>Ouverture de l'article...</p>
         <p style="font-size: 0.9em; margin-bottom: 1rem;">Si vous n'avez pas l'application :</p>
-        <a href="https://apps.apple.com/app/id6758163762" class="btn" id="ios-btn">Télécharger sur l'App Store</a>
+        <a href="https://apps.apple.com/app/y%C3%A9lim/id6758163762" class="btn" id="ios-btn">Télécharger sur l'App Store</a>
         <a href="https://play.google.com/store/apps/details?id=com.s1.yelim" class="btn" id="android-btn">Télécharger
             sur le Play Store</a>
     </div>

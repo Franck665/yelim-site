@@ -3,8 +3,18 @@
     "public": ".",
     "ignore": [
       "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      ".git",
+      ".git/**",
+      ".firebase",
+      ".firebase/**",
+      ".firebaserc",
+      ".gitignore",
+      ".DS_Store",
+      ".claude",
+      ".claude/**",
+      "cursorrules",
+      "generate_app_pages.py"
     ],
     "rewrites": [
       { "source": "/auth/action", "destination": "/auth/action.html" }
