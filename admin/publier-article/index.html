@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publier un article | Yélim Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div id="auth-screen" class="auth-screen">
+        <section class="auth-panel">
+            <div class="brand-mark">Y</div>
+            <h1>Yélim Admin</h1>
+            <p>Connecte-toi pour accéder à la publication d'articles.</p>
+            <form id="login-form" class="auth-form">
+                <label>
+                    Email
+                    <input id="login-email" type="email" autocomplete="email" required>
+                </label>
+                <label>
+                    Mot de passe
+                    <input id="login-password" type="password" autocomplete="current-password" required>
+                </label>
+                <button class="primary-button" type="submit">
+                    <span>Se connecter</span>
+                    <span class="button-loader" aria-hidden="true"></span>
+                </button>
+                <p id="login-error" class="form-error" hidden></p>
+            </form>
+        </section>
+    </div>
+
+    <div id="app-shell" class="app-shell" hidden>
+        <aside class="sidebar">
+            <a class="sidebar-brand" href="/">
+                <span class="brand-mark small">Y</span>
+                <span>
+                    <strong>Yélim</strong>
+                    <small>Publication</small>
+                </span>
+            </a>
+            <nav class="section-nav" aria-label="Sections du formulaire">
+                <a href="/admin/articles/" class="nav-item">Articles</a>
+                <a href="#images" class="nav-item active">Images</a>
+                <a href="#infos" class="nav-item">Infos</a>
+                <a href="#prix-stock" class="nav-item">Prix & stock</a>
+                <a href="#livraison" class="nav-item">Livraison</a>
+                <a href="#variantes" class="nav-item">Variantes</a>
+                <a href="#options" class="nav-item">Options</a>
+                <a href="#validation" class="nav-item">Validation</a>
+            </nav>
+            <button id="logout-button" class="ghost-button" type="button">Déconnexion</button>
+        </aside>
+
+        <main class="workspace">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Nouvel article</p>
+                    <h1>Publier un produit</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button id="reset-form-button" class="ghost-button inline" type="button" title="Vider tous les champs">Réinitialiser</button>
+                    <div class="status-pill" id="admin-status">
+                        <span class="dot"></span>
+                        Admin vérifié
+                    </div>
+                </div>
+            </header>
+
+            <div class="layout">
+                <form id="article-form" class="form-stack">
+                    <section id="images" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">01</span>
+                                <h2>Images principales</h2>
+                            </div>
+                            <span class="required">Requis</span>
+                        </div>
+                        <label id="drop-zone" class="drop-zone">
+                            <input id="image-input" type="file" accept="image/*" multiple>
+                            <span class="upload-icon">+</span>
+                            <strong>Sélectionner depuis l'ordinateur</strong>
+                            <small>Jusqu'à 5 images. La première devient l'image principale.</small>
+                        </label>
+                        <div id="image-preview" class="image-grid"></div>
+                    </section>
+
+                    <section id="infos" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">02</span>
+                                <h2>Informations générales</h2>
+                            </div>
+                        </div>
+                        <div class="template-loader">
+                            <div class="field-row">
+                                <div>
+                                    <strong>Charger depuis un article existant</strong>
+                                    <p>Remplit les informations sans reprendre les images ni les variantes.</p>
+                                </div>
+                            </div>
+                            <div class="template-search">
+                                <input id="article-template-search" type="search" placeholder="Rechercher un article similaire...">
+                                <button id="clear-template-search" class="ghost-button inline" type="button">Effacer</button>
+                            </div>
+                            <div id="article-template-results" class="template-results"></div>
+                        </div>
+                        <div class="grid two">
+                            <label>
+                                Nom de l'article
+                                <input id="nom" name="nom" type="text" autocomplete="off" required>
+                            </label>
+                            <label class="combo-field">
+                                Catégorie
+                                <input id="categorie" name="categorie" type="text" list="categories-list" autocomplete="off">
+                                <datalist id="categories-list"></datalist>
+                            </label>
+                            <label class="combo-field">
+                                Boutique / Vendeur
+                                <input id="vendeur" name="vendeur" type="text" list="vendeurs-list" autocomplete="off" required>
+                                <datalist id="vendeurs-list"></datalist>
+                            </label>
+                            <label>
+                                Lien vidéo
+                                <input id="lien" name="lien" type="url" inputmode="url">
+                            </label>
+                        </div>
+                        <label>
+                            Description
+                            <textarea id="details" name="details" rows="5"></textarea>
+                        </label>
+                        <div class="chip-composer">
+                            <div class="field-row">
+                                <label for="hashtag-input">Hashtags</label>
+                                <div class="field-actions">
+                                    <button id="toggle-hashtag-library" class="secondary-button compact" type="button">Bibliothèque</button>
+                                    <button id="apply-suggestions" class="text-button" type="button">Appliquer suggestions</button>
+                                </div>
+                            </div>
+                            <div id="hashtag-chips" class="chips"></div>
+                            <div class="inline-input">
+                                <span>#</span>
+                                <input id="hashtag-input" type="text" placeholder="Ajouter un hashtag puis Entrée">
+                            </div>
+                            <div id="hashtag-library" class="checklist-panel" hidden>
+                                <div class="checklist-head">
+                                    <strong>Bibliothèque de hashtags</strong>
+                                    <span id="hashtag-library-count">0 sélectionné</span>
+                                </div>
+                                <input id="hashtag-library-search" type="search" placeholder="Rechercher un hashtag...">
+                                <div id="hashtag-library-list" class="checklist"></div>
+                            </div>
+                            <div id="hashtag-suggestions" class="suggestion-row"></div>
+                        </div>
+                        <label>
+                            Spécification
+                            <textarea id="specification" name="specification" rows="4"></textarea>
+                        </label>
+                    </section>
+
+                    <section id="prix-stock" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">03</span>
+                                <h2>Prix & stock</h2>
+                            </div>
+                        </div>
+                        <div class="grid three">
+                            <label>Prix vente<input id="prix" type="number" min="0" required></label>
+                            <label>Prix achat<input id="prixAchat" type="number" min="0"></label>
+                            <label>Prix barré<input id="prixNonReduit" type="number" min="0" value="0"></label>
+                            <label>Stock<input id="stock" type="number" min="0" required></label>
+                            <label>Quantité limite commande<input id="qtLimit" type="number" min="1" value="1"></label>
+                            <label>Cash<input id="cash" type="text" placeholder="false"></label>
+                        </div>
+                    </section>
+
+                    <section id="livraison" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">04</span>
+                                <h2>Livraison & expédition</h2>
+                            </div>
+                        </div>
+                        <div class="grid three">
+                            <label>Prix expédition<input id="prixExp" type="number" min="0" value="1000"></label>
+                            <label>Prix livraison<input id="prixLiv" type="number" min="0" value="750"></label>
+                            <label>Frais gare<input id="fraisTransportGare" type="number" min="0" value="750"></label>
+                            <label>Limite expédition<input id="qtLimitExp" type="number" min="1" value="5"></label>
+                            <label>
+                                Poids
+                                <select id="poids">
+                                    <option value="léger">Léger</option>
+                                    <option value="moyen">Moyen</option>
+                                    <option value="lourd">Lourd</option>
+                                </select>
+                            </label>
+                            <label>
+                                Délai
+                                <select id="delai">
+                                    <option>1 heure</option>
+                                    <option selected>2 heures</option>
+                                    <option>3 heures</option>
+                                    <option>24h</option>
+                                    <option>48h</option>
+                                    <option>3 jours</option>
+                                    <option>4 jours</option>
+                                    <option>5 jours</option>
+                                    <option>1 semaine</option>
+                                </select>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section id="variantes" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">05</span>
+                                <h2>Variantes</h2>
+                            </div>
+                        </div>
+                        <div class="variant-tools">
+                            <div class="tool-card">
+                                <div class="tool-card-header">
+                                    <h3>Tailles</h3>
+                                    <button class="text-button" id="size-preset" type="button">Preset</button>
+                                </div>
+                                <div id="size-chips" class="chips selectable"></div>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-card-header">
+                                    <h3>Couleurs</h3>
+                                    <button class="text-button" id="color-preset" type="button">Preset</button>
+                                </div>
+                                <div id="color-chips" class="chips selectable colors"></div>
+                            </div>
+                        </div>
+                        <div class="complex-builder">
+                            <div class="field-row">
+                                <h3>Variantes complexes</h3>
+                                <div class="field-actions">
+                                    <label class="secondary-button compact file-action">
+                                        Importer JSON
+                                        <input id="variant-json-input" type="file" accept=".json,application/json">
+                                    </label>
+                                    <button id="add-variant" class="secondary-button" type="button">Ajouter</button>
+                                </div>
+                            </div>
+                            <p id="variant-json-status" class="helper-text"></p>
+                            <div id="variant-list" class="variant-list"></div>
+                        </div>
+                    </section>
+
+                    <section id="options" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">06</span>
+                                <h2>Options avancées</h2>
+                            </div>
+                        </div>
+                        <div class="toggle-grid">
+                            <label class="switch-row"><span>Article expédiable</span><input id="expediable" type="checkbox" checked></label>
+                            <label class="switch-row"><span>Article tranchable</span><input id="tranchable" type="checkbox" checked></label>
+                            <label class="switch-row"><span>Précommande</span><input id="precommande" type="checkbox"></label>
+                            <label class="switch-row"><span>Dernière minute</span><input id="isDerniereMinute" type="checkbox"></label>
+                            <label class="switch-row"><span>Paiement progressif</span><input id="progressif" type="checkbox"></label>
+                            <label class="switch-row"><span>Vente par quantité</span><input id="venteParQuantiteSpecifique" type="checkbox"></label>
+                        </div>
+                        <div id="precommande-fields" class="grid two conditional" hidden>
+                            <label>
+                                Type précommande
+                                <select id="typePrecommande">
+                                    <option value="locale">Locale</option>
+                                    <option value="internationale">Internationale</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div id="progressif-fields" class="grid two conditional" hidden>
+                            <label>
+                                Fréquence
+                                <select id="freqProgressif">
+                                    <option value="jour">Jour</option>
+                                    <option value="semaine" selected>Semaine</option>
+                                    <option value="mois">Mois</option>
+                                </select>
+                            </label>
+                            <label>
+                                Durée
+                                <select id="dureeProgressif">
+                                    <option>1 mois</option>
+                                    <option>2 mois</option>
+                                    <option selected>3 mois</option>
+                                    <option>4 mois</option>
+                                    <option>5 mois</option>
+                                    <option>6 mois</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div id="quantity-fields" class="quantity-panel conditional" hidden>
+                            <div class="grid three">
+                                <label>
+                                    Unité
+                                    <select id="uniteVente"></select>
+                                </label>
+                                <label>Quantité par unité<input id="quantiteParUnite" type="number" min="1" value="1"></label>
+                                <label>Prix unité complète<input id="prixUniteVente" type="number" min="0" value="0"></label>
+                                <label>Prix achat unité<input id="prixAchatUniteVente" type="number" min="0" value="0"></label>
+                                <label>Prix pièce<input id="prixPieceIndividuelle" type="number" min="0" value="0"></label>
+                                <label>Minimum commande<input id="quantiteMinimumCommande" type="number" min="1" value="1"></label>
+                                <label>Incrément<input id="incrementQuantite" type="number" min="1" value="1"></label>
+                                <label>Limite expédition unité<input id="quantiteLimiteExpeditionUniteDeVente" type="number" min="0" value="5"></label>
+                                <label>Limite livraison unité<input id="quantiteLimiteLivraisonUniteDeVente" type="number" min="0" value="5"></label>
+                                <label>Prix expédition unité<input id="prixExpeditionUniteDeVente" type="number" min="0" value="750"></label>
+                                <label>Prix livraison unité<input id="prixLivraisonUniteDeVente" type="number" min="0" value="750"></label>
+                            </div>
+                            <div class="toggle-grid compact">
+                                <label class="switch-row"><span>Vente individuelle</span><input id="venteIndividuelleAutorisee" type="checkbox"></label>
+                                <label class="switch-row"><span>Afficher prix unitaire</span><input id="affichagePrixUnitaire" type="checkbox" checked></label>
+                                <label class="switch-row"><span>Réduction quantité</span><input id="reductionQuantite" type="checkbox" checked></label>
+                            </div>
+                            <div class="grid two">
+                                <label>Libellé prix unitaire<input id="libellePrixUnitaire" type="text"></label>
+                                <label>Informations quantité<input id="informationsQuantite" type="text"></label>
+                            </div>
+                        </div>
+                        <div class="grid two">
+                            <label>Réductions<input id="reductions" type="text" placeholder="2 to 100, 5 to 200"></label>
+                            <label>
+                                Restriction d'âge
+                                <select id="restrictionAge">
+                                    <option value="AUCUNE">Aucune restriction</option>
+                                    <option value="MAJEUR">Réservé aux majeurs 18+</option>
+                                    <option value="ALCOOL">Alcool</option>
+                                    <option value="TABAC_VAPOTAGE">Tabac / vapotage</option>
+                                    <option value="CONTENU_ADULTE">Contenu adulte</option>
+                                    <option value="PRODUITS_PHARMACEUTIQUES">Produits pharmaceutiques</option>
+                                </select>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section id="validation" class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step">07</span>
+                                <h2>Validation</h2>
+                            </div>
+                        </div>
+                        <div id="warnings" class="warnings"></div>
+                        <button id="publish-button" class="publish-button" type="submit">
+                            <span>Publier l'article</span>
+                            <span class="button-loader" aria-hidden="true"></span>
+                        </button>
+                    </section>
+                </form>
+
+                <aside class="preview-panel">
+                    <div class="preview-card">
+                        <div id="preview-image" class="preview-image"></div>
+                        <div class="preview-body">
+                            <p id="preview-category">Catégorie</p>
+                            <h2 id="preview-title">Nom de l'article</h2>
+                            <strong id="preview-price">0 FCFA</strong>
+                            <span id="preview-vendor">Boutique</span>
+                        </div>
+                    </div>
+                    <div class="completion-card">
+                        <div class="field-row">
+                            <strong>Complétude</strong>
+                            <span id="completion-score">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <span id="completion-bar"></span>
+                        </div>
+                        <ul id="missing-list"></ul>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <template id="variant-template">
+        <article class="variant-card">
+            <div class="variant-card-header">
+                <input class="variant-name" type="text" placeholder="Nom variante, ex: parfum">
+                <label class="mini-check"><input class="variant-required" type="checkbox" checked> Obligatoire</label>
+                <button class="icon-button remove-variant" type="button">x</button>
+            </div>
+            <div class="variant-options"></div>
+            <button class="text-button add-option" type="button">Ajouter une option</button>
+        </article>
+    </template>
+
+    <template id="option-template">
+        <div class="option-row">
+            <input class="option-value" type="text" placeholder="Valeur">
+            <input class="option-price" type="number" min="0" value="0" placeholder="+ prix">
+            <input class="option-color" type="text" placeholder="#000000">
+            <label class="option-image">
+                Image
+                <input class="option-file" type="file" accept="image/*">
+            </label>
+            <button class="icon-button remove-option" type="button">x</button>
+        </div>
+    </template>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles | Yélim Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../publier-article/styles.css">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div id="auth-screen" class="auth-screen">
+        <section class="auth-panel">
+            <div class="brand-mark">Y</div>
+            <h1>Yélim Admin</h1>
+            <p>Connecte-toi pour gérer les articles.</p>
+            <form id="login-form" class="auth-form">
+                <label>Email<input id="login-email" type="email" autocomplete="email" required></label>
+                <label>Mot de passe<input id="login-password" type="password" autocomplete="current-password" required></label>
+                <button class="primary-button" type="submit">
+                    <span>Se connecter</span>
+                    <span class="button-loader" aria-hidden="true"></span>
+                </button>
+                <p id="login-error" class="form-error" hidden></p>
+            </form>
+        </section>
+    </div>
+
+    <div id="app-shell" class="app-shell articles-shell" hidden>
+        <aside class="sidebar">
+            <a class="sidebar-brand" href="/">
+                <span class="brand-mark small">Y</span>
+                <span>
+                    <strong>Yélim</strong>
+                    <small>Articles</small>
+                </span>
+            </a>
+            <nav class="section-nav" aria-label="Navigation admin">
+                <a href="/admin/publier-article/" class="nav-item">Publier</a>
+                <a href="/admin/articles/" class="nav-item active">Articles</a>
+            </nav>
+            <button id="logout-button" class="ghost-button" type="button">Déconnexion</button>
+        </aside>
+
+        <main class="workspace">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Catalogue</p>
+                    <h1>Gérer les articles</h1>
+                </div>
+                <a class="secondary-button" href="/admin/publier-article/">Nouvel article</a>
+            </header>
+
+            <section class="manager-grid">
+                <div class="panel list-panel">
+                    <div class="list-toolbar">
+                        <label class="search-field">
+                            Rechercher
+                            <input id="search-input" type="search" placeholder="Nom, boutique, catégorie, hashtag...">
+                        </label>
+                        <button id="refresh-button" class="ghost-button inline" type="button">Actualiser</button>
+                    </div>
+                    <div id="list-status" class="helper-text"></div>
+                    <div id="articles-list" class="articles-list"></div>
+                    <button id="load-more-button" class="secondary-button full" type="button">Charger plus</button>
+                </div>
+
+                <aside id="detail-panel" class="panel detail-panel">
+                    <div class="empty-detail">
+                        <div class="brand-mark">Y</div>
+                        <h2>Sélectionne un article</h2>
+                        <p>Les informations, images et actions apparaîtront ici.</p>
+                    </div>
+                </aside>
+            </section>
+        </main>
+    </div>
+
+    <dialog id="edit-dialog" class="edit-dialog">
+        <form id="edit-form" method="dialog" class="edit-form">
+            <div class="dialog-head">
+                <div>
+                    <p class="eyebrow">Modification</p>
+                    <h2>Modifier l'article</h2>
+                </div>
+                <button class="icon-button" value="cancel" type="button" id="close-edit">x</button>
+            </div>
+            <input id="edit-id" type="hidden">
+            <section class="edit-images">
+                <div class="field-row">
+                    <div>
+                        <strong>Images de l'article</strong>
+                        <p>La première image sera utilisée comme image principale.</p>
+                    </div>
+                    <label class="secondary-button compact file-action">
+                        Ajouter des images
+                        <input id="edit-image-input" type="file" accept="image/*" multiple>
+                    </label>
+                </div>
+                <div id="edit-image-list" class="edit-image-list"></div>
+            </section>
+            <div class="grid two">
+                <label>Nom<input id="edit-nom" type="text" required></label>
+                <label>Catégorie<input id="edit-categorie" type="text"></label>
+                <label>Boutique / Vendeur<input id="edit-vendeur" type="text"></label>
+                <label>Lien vidéo<input id="edit-lienVideo" type="url"></label>
+            </div>
+            <label>Description<textarea id="edit-desc" rows="5"></textarea></label>
+            <label>Spécification<textarea id="edit-specification" rows="4"></textarea></label>
+            <label>Hashtags<input id="edit-hashtags" type="text" placeholder="tag1, tag2, tag3"></label>
+            <div class="grid three">
+                <label>Prix<input id="edit-prix" type="number" min="0"></label>
+                <label>Prix achat<input id="edit-prixAchat" type="number" min="0"></label>
+                <label>Prix barré<input id="edit-prixNonReduit" type="number" min="0"></label>
+                <label>Stock<input id="edit-stock" type="number" min="0"></label>
+                <label>Prix livraison<input id="edit-prixLivraison" type="number" min="0"></label>
+                <label>Prix expédition<input id="edit-prixExpedition" type="number" min="0"></label>
+                <label>Frais gare<input id="edit-fraisGare" type="number" min="0"></label>
+                <label>Limite commande<input id="edit-quantiteLimite" type="number" min="1"></label>
+                <label>Limite expédition<input id="edit-quantiteLimiteExpedition" type="number" min="1"></label>
+            </div>
+            <div class="grid three">
+                <label>
+                    Poids
+                    <select id="edit-poidsColis">
+                        <option value="léger">Léger</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="lourd">Lourd</option>
+                    </select>
+                </label>
+                <label>Délai<input id="edit-delaiLivraison" type="text"></label>
+                <label>
+                    Restriction
+                    <select id="edit-restrictionAge">
+                        <option value="AUCUNE">Aucune</option>
+                        <option value="MAJEUR">Majeur</option>
+                        <option value="ALCOOL">Alcool</option>
+                        <option value="TABAC_VAPOTAGE">Tabac / vapotage</option>
+                        <option value="CONTENU_ADULTE">Contenu adulte</option>
+                        <option value="PRODUITS_PHARMACEUTIQUES">Produits pharmaceutiques</option>
+                    </select>
+                </label>
+            </div>
+            <div class="toggle-grid compact">
+                <label class="switch-row"><span>Expédiable</span><input id="edit-peutEtreExpedier" type="checkbox"></label>
+                <label class="switch-row"><span>Tranchable</span><input id="edit-tranchable" type="checkbox"></label>
+                <label class="switch-row"><span>Précommande</span><input id="edit-precommande" type="checkbox"></label>
+                <label class="switch-row"><span>Dernière minute</span><input id="edit-isDerniereMinute" type="checkbox"></label>
+                <label class="switch-row"><span>Paiement progressif</span><input id="edit-progressif" type="checkbox"></label>
+            </div>
+            <p id="edit-status" class="helper-text"></p>
+            <div class="dialog-actions">
+                <button id="cancel-edit" class="ghost-button inline" type="button">Annuler</button>
+                <button id="save-edit" class="publish-button" type="submit">
+                    <span>Enregistrer</span>
+                    <span class="button-loader" aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>

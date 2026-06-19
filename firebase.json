@@ -17,7 +17,9 @@
       "generate_app_pages.py"
     ],
     "rewrites": [
-      { "source": "/auth/action", "destination": "/auth/action.html" }
+      { "source": "/auth/action", "destination": "/auth/action.html" },
+      { "source": "/affiliates-privacy.html", "destination": "/legal/affiliates-privacy.html" },
+      { "source": "/affiliates-terms.html", "destination": "/legal/affiliates-terms.html" }
     ]
   }
 }
