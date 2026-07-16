@@ -568,8 +568,14 @@ button.loading .button-loader {
 .chip-composer,
 .complex-builder,
 .quantity-panel,
+.variant-permissions,
 .conditional {
     margin-top: 16px;
+}
+
+.variant-permissions {
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
 }
 
 .chips,

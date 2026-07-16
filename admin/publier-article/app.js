@@ -370,7 +370,10 @@ dropZone.addEventListener("drop", (event) => {
     dropZone.classList.remove("dragging");
     addImages(Array.from(event.dataTransfer.files || []));
 });
-imageInput.addEventListener("change", () => addImages(Array.from(imageInput.files || [])));
+imageInput.addEventListener("change", () => {
+    addImages(Array.from(imageInput.files || []));
+    imageInput.value = "";
+});
 
 function addImages(files) {
     const imageFiles = files.filter((file) => file.type.startsWith("image/")).slice(0, 5 - state.images.length);
@@ -598,15 +601,39 @@ function applyTemplateArticle(article) {
     $("#quantiteLimiteLivraisonUniteDeVente").value = article.quantiteLimiteLivraisonUniteDeVente ?? 5;
     $("#prixExpeditionUniteDeVente").value = article.prixExpeditionUniteDeVente ?? 750;
     $("#prixLivraisonUniteDeVente").value = article.prixLivraisonUniteDeVente ?? 750;
+    if (Array.isArray(article.optionsAchat) && article.optionsAchat.length) {
+        const detailOption = article.optionsAchat.find((option) => option.estGros !== true);
+        const wholesaleOption = article.optionsAchat.find((option) => option.estGros === true);
+        if (detailOption) {
+            $("#prix").value = detailOption.prix ?? article.prix ?? "";
+            $("#prixPieceIndividuelle").value = detailOption.prix ?? article.prixPieceIndividuelle ?? 0;
+            $("#prixLiv").value = detailOption.prixLivraison ?? article.prixLivraison ?? 750;
+            $("#prixExp").value = detailOption.prixExpedition ?? article.prixExpedition ?? 1000;
+            $("#venteIndividuelleAutorisee").checked = true;
+        }
+        if (wholesaleOption) {
+            $("#venteParQuantiteSpecifique").checked = true;
+            $("#uniteVente").value = wholesaleOption.uniteVente || article.uniteVente || "DOUZAINE";
+            $("#quantiteParUnite").value = wholesaleOption.quantiteIncluse ?? article.quantiteParUnite ?? 1;
+            $("#prixUniteVente").value = wholesaleOption.prix ?? article.prixUniteVente ?? 0;
+            $("#prixAchatUniteVente").value = wholesaleOption.prixAchat ?? article.prixAchatUniteVente ?? 0;
+            $("#prixLivraisonUniteDeVente").value = wholesaleOption.prixLivraison ?? article.prixLivraisonUniteDeVente ?? 750;
+            $("#prixExpeditionUniteDeVente").value = wholesaleOption.prixExpedition ?? article.prixExpeditionUniteDeVente ?? 750;
+            $("#quantiteMinimumCommande").value = wholesaleOption.quantiteMinimumCommande ?? article.quantiteMinimumCommande ?? 1;
+            $("#incrementQuantite").value = wholesaleOption.incrementQuantite ?? article.incrementQuantite ?? 1;
+            $("#quantiteLimiteLivraisonUniteDeVente").value = wholesaleOption.quantiteLimiteLivraison ?? article.quantiteLimiteLivraisonUniteDeVente ?? 5;
+            $("#quantiteLimiteExpeditionUniteDeVente").value = wholesaleOption.quantiteLimiteExpedition ?? article.quantiteLimiteExpeditionUniteDeVente ?? 5;
+        }
+    }
     $("#reductions").value = reductionsToText(article.reductions || []);
     $("#restrictionAge").value = article.restrictionAge || "AUCUNE";
 
     state.hashtags = (article.hashtags || []).filter((tag) => normalizeTag(tag) !== normalizeTag(article.vendeur));
-    clearImagesAndVariants();
+    clearVariants();
     renderHashtags();
     renderHashtagLibrary();
     updateAll();
-    showToast("Informations chargées. Images et variantes non reprises.");
+    showToast("Informations chargées. Images conservées, variantes non reprises.");
 }
 
 function reductionsToText(reductions) {
@@ -645,6 +672,7 @@ function addVariantCard(seed = {}) {
     const template = $("#variant-template").content.cloneNode(true);
     const card = $(".variant-card", template);
     $(".variant-name", card).value = seed.nom || "";
+    $(".variant-name", card).addEventListener("input", updateAll);
     $(".variant-required", card).checked = seed.mustBeSelected !== false;
     $(".remove-variant", card).addEventListener("click", () => {
         card.remove();
@@ -934,11 +962,69 @@ function scanInputs() {
 
 function updateAll() {
     updateConditionalFields();
+    renderWholesaleVariantRules();
     renderSuggestions();
     updatePreview();
     updateCompletion();
     renderWarnings();
     updateActiveNav();
+}
+
+function normalizeVariantPermissionKey(name) {
+    return String(name || "").trim().toLowerCase();
+}
+
+function getVariantPermissionEntries() {
+    const entries = [];
+    const seen = new Set();
+    const add = (name) => {
+        const label = String(name || "").trim();
+        const key = normalizeVariantPermissionKey(label);
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        entries.push({ key, label });
+    };
+
+    if (state.selectedSizes.size) add("taille");
+    if (state.selectedColors.size) add("couleur");
+    $$(".variant-card").forEach((card) => add($(".variant-name", card).value));
+
+    return entries;
+}
+
+function renderWholesaleVariantRules() {
+    const panel = $("#wholesale-variant-rules");
+    const list = $("#wholesale-variant-rule-list");
+    if (!panel || !list) return;
+
+    const previous = new Map(
+        $$(".wholesale-variant-toggle", list).map((input) => [input.dataset.variantKey, input.checked])
+    );
+    const entries = getVariantPermissionEntries();
+    const shouldShow = checked("venteParQuantiteSpecifique") && entries.length > 0;
+
+    panel.hidden = !shouldShow;
+    list.innerHTML = "";
+    if (!shouldShow) return;
+
+    entries.forEach((entry) => {
+        const label = document.createElement("label");
+        label.className = "switch-row";
+
+        const text = document.createElement("span");
+        text.textContent = entry.label;
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.className = "wholesale-variant-toggle";
+        input.dataset.variantKey = entry.key;
+        input.dataset.variantName = entry.label;
+        input.checked = previous.has(entry.key) ? previous.get(entry.key) : true;
+        input.addEventListener("change", updateAll);
+
+        label.append(text, input);
+        list.appendChild(label);
+    });
 }
 
 function updatePreview() {
@@ -1000,6 +1086,12 @@ function validate(blocking = true) {
     if (checked("venteParQuantiteSpecifique") && intValue("prixAchatUniteVente") > intValue("prixUniteVente")) {
         errors.push("Le prix d'achat de l'unité ne peut pas dépasser son prix de vente.");
     }
+    if (checked("venteParQuantiteSpecifique") && intValue("prixUniteVente") <= 0) {
+        errors.push("Le prix du format en gros doit être supérieur à 0.");
+    }
+    if (checked("venteParQuantiteSpecifique") && checked("venteIndividuelleAutorisee") && intValue("prixPieceIndividuelle") <= 0) {
+        errors.push("Le prix de la pièce individuelle doit être supérieur à 0.");
+    }
     const days = daysFromDelay(value("delai"));
     if (checked("precommande") && days < 2) errors.push("Pour une précommande, choisissez un délai de 2 jours minimum.");
     if (!checked("precommande") && days >= 2) errors.push("Ce délai indique plusieurs jours. Activez Précommande.");
@@ -1050,7 +1142,7 @@ async function publishArticle(button) {
         const articleIds = await writeArticleDocuments(imageUrls, vendor, variants);
         await adjustTotalArticlesBestEffort(articleIds.length);
         resetAfterPublish();
-        showToast(articleIds.length > 1 ? "Articles gros et détail publiés." : "Article publié avec succès.");
+        showToast("Article publié avec ses formats d'achat.");
     } catch (error) {
         console.error(error);
         const friendly = friendlyFirebaseError(error);
@@ -1222,63 +1314,37 @@ function normalizeHex(input) {
 
 async function writeArticleDocuments(imageUrls, vendor, variants) {
     const batch = db.batch();
-    const shouldDualPublish = checked("venteParQuantiteSpecifique") && checked("venteIndividuelleAutorisee");
-    const ids = shouldDualPublish ? [uuid(), uuid()] : [uuid()];
-    const codeLiaison = shouldDualPublish ? `LINK_${Math.floor(Date.now() / 1000)}_${Math.floor(1000 + Math.random() * 9000)}` : null;
-
-    if (shouldDualPublish) {
-        batch.set(db.collection("Articles").doc(ids[0]), buildArticlePayload({
-            id: ids[0],
-            typeVente: "gros",
-            mainImage: imageUrls[0],
-            images: imageUrls,
-            vendor,
-            variants,
-            codeLiaison,
-            articleLieId: ids[1]
-        }));
-        batch.set(db.collection("Articles").doc(ids[1]), buildArticlePayload({
-            id: ids[1],
-            typeVente: "detail",
-            mainImage: imageUrls[0],
-            images: imageUrls,
-            vendor,
-            variants,
-            codeLiaison,
-            articleLieId: ids[0]
-        }));
-    } else {
-        batch.set(db.collection("Articles").doc(ids[0]), buildArticlePayload({
-            id: ids[0],
-            typeVente: checked("venteParQuantiteSpecifique") ? "gros" : "normal",
-            mainImage: imageUrls[0],
-            images: imageUrls,
-            vendor,
-            variants,
-            codeLiaison: null,
-            articleLieId: null
-        }));
-    }
+    const id = uuid();
+    batch.set(db.collection("Articles").doc(id), buildArticlePayload({
+        id,
+        typeVente: checked("venteParQuantiteSpecifique") ? "options" : "normal",
+        mainImage: imageUrls[0],
+        images: imageUrls,
+        vendor,
+        variants,
+        codeLiaison: null,
+        articleLieId: null
+    }));
     await batch.commit();
-    return ids;
+    return [id];
 }
 
 function buildArticlePayload({ id, typeVente, mainImage, images, vendor, variants, codeLiaison, articleLieId }) {
-    const isGros = typeVente === "gros";
-    const isDetail = typeVente === "detail";
     const restriction = value("restrictionAge") || "AUCUNE";
-    const quantiteParUnite = intValue("quantiteParUnite", 1);
+    const quantiteParUnite = Math.max(1, intValue("quantiteParUnite", unitDefaultQuantity(value("uniteVente"))));
     const basePrice = intValue("prix");
-    const finalPrice = isGros ? intValue("prixUniteVente") : basePrice;
+    const finalPrice = checked("venteParQuantiteSpecifique") && !checked("venteIndividuelleAutorisee")
+        ? intValue("prixUniteVente")
+        : basePrice;
     const stock = intValue("stock");
     const hashtags = buildNormalizedHashtags();
 
     return {
         articleId: id,
-        nom: value("nom") + (isGros ? ` (${unitLabel(value("uniteVente"))})` : ""),
+        nom: value("nom"),
         nomCollection: value("categorie"),
         prix: finalPrice,
-        prixAchat: isGros ? intValue("prixAchatUniteVente") : intValue("prixAchat"),
+        prixAchat: intValue("prixAchat"),
         mainImage,
         productImages: images,
         desc: value("details"),
@@ -1301,22 +1367,22 @@ function buildArticlePayload({ id, typeVente, mainImage, images, vendor, variant
         paiementProgressifFrequence: value("freqProgressif"),
         paiementProgressifDuree: value("dureeProgressif"),
         cash: value("cash"),
-        venteParQuantiteSpecifique: isDetail ? false : checked("venteParQuantiteSpecifique"),
-        uniteVente: isGros ? value("uniteVente") : isDetail ? "PIECE" : null,
-        quantiteParUnite: isDetail ? 1 : quantiteParUnite,
-        venteIndividuelleAutorisee: isGros ? false : checked("venteIndividuelleAutorisee"),
-        prixUniteVente: isGros ? intValue("prixUniteVente") : finalPrice,
-        prixAchatUniteVente: isGros ? intValue("prixAchatUniteVente") : 0,
-        prixPieceIndividuelle: isGros ? intValue("prixPieceIndividuelle") : finalPrice,
-        quantiteMinimumCommande: isDetail ? 1 : intValue("quantiteMinimumCommande", 1),
-        incrementQuantite: isDetail ? 1 : intValue("incrementQuantite", 1),
+        venteParQuantiteSpecifique: checked("venteParQuantiteSpecifique"),
+        uniteVente: checked("venteParQuantiteSpecifique") ? value("uniteVente") : null,
+        quantiteParUnite,
+        venteIndividuelleAutorisee: checked("venteParQuantiteSpecifique") ? checked("venteIndividuelleAutorisee") : true,
+        prixUniteVente: checked("venteParQuantiteSpecifique") ? intValue("prixUniteVente") : finalPrice,
+        prixAchatUniteVente: checked("venteParQuantiteSpecifique") ? intValue("prixAchatUniteVente") : 0,
+        prixPieceIndividuelle: checked("venteParQuantiteSpecifique") ? intValue("prixPieceIndividuelle") : finalPrice,
+        quantiteMinimumCommande: Math.max(1, intValue("quantiteMinimumCommande", 1)),
+        incrementQuantite: Math.max(1, intValue("incrementQuantite", 1)),
         affichagePrixUnitaire: checked("affichagePrixUnitaire"),
-        libellePrixUnitaire: isDetail ? "Prix à l'unité" : value("libellePrixUnitaire"),
+        libellePrixUnitaire: value("libellePrixUnitaire"),
         informationsQuantite: value("informationsQuantite"),
-        reductionQuantite: isDetail ? false : checked("reductionQuantite"),
-        prixLivraison: intValue("prixLiv"),
+        reductionQuantite: checked("reductionQuantite"),
+        prixLivraison: rootPrixLivraison(),
         fraisTransportPourLivrerALaGare: intValue("fraisTransportGare"),
-        prixExpedition: intValue("prixExp"),
+        prixExpedition: rootPrixExpedition(),
         prixNonReduit: intValue("prixNonReduit"),
         quantiteLimite: Math.max(1, intValue("qtLimit", 1)),
         quantiteLimiteExpedition: Math.max(1, intValue("qtLimitExp", 1)),
@@ -1324,6 +1390,7 @@ function buildArticlePayload({ id, typeVente, mainImage, images, vendor, variant
         quantiteLimiteLivraisonUniteDeVente: intValue("quantiteLimiteLivraisonUniteDeVente", 5),
         prixExpeditionUniteDeVente: intValue("prixExpeditionUniteDeVente", 750),
         prixLivraisonUniteDeVente: intValue("prixLivraisonUniteDeVente", 750),
+        optionsAchat: buildPurchaseOptions(),
         variants,
         specification: value("specification"),
         lienVideo: value("lien"),
@@ -1332,7 +1399,7 @@ function buildArticlePayload({ id, typeVente, mainImage, images, vendor, variant
         categorieRestreinte: restrictedCategory(restriction),
         requiresAgeVerification: restriction !== "AUCUNE",
         ageMinimum: ageMinimum(restriction),
-        stock: isDetail && quantiteParUnite > 0 ? stock * quantiteParUnite : stock,
+        stock,
         randomInt: randomInt(),
         randomInt1: Math.floor(Date.now() / 1000),
         randomInt2: -randomInt(),
@@ -1347,11 +1414,110 @@ function unitLabel(raw) {
     return units.find(([value]) => value === raw)?.[1] || "Unité";
 }
 
+function rootPrixLivraison() {
+    if (checked("venteParQuantiteSpecifique") && !checked("venteIndividuelleAutorisee")) {
+        return intValue("prixLivraisonUniteDeVente", intValue("prixLiv"));
+    }
+    return intValue("prixLiv");
+}
+
+function rootPrixExpedition() {
+    if (checked("venteParQuantiteSpecifique") && !checked("venteIndividuelleAutorisee")) {
+        return intValue("prixExpeditionUniteDeVente", intValue("prixExp"));
+    }
+    return intValue("prixExp");
+}
+
+function buildPurchaseOptions() {
+    const allVariantPermissions = buildVariantPermissionMap({ forceAllowed: true });
+    const wholesaleVariantPermissions = buildVariantPermissionMap();
+    const withVariantPermissions = (option, permissions) => (
+        Object.keys(permissions).length
+            ? { ...option, variantesAutorisees: permissions }
+            : option
+    );
+    const detailPrice = checked("venteParQuantiteSpecifique")
+        ? intValue("prixPieceIndividuelle", intValue("prix"))
+        : intValue("prix");
+    const detailOption = withVariantPermissions({
+        id: "detail",
+        label: "À l'unité",
+        uniteVente: "PIECE",
+        quantiteIncluse: 1,
+        prix: detailPrice,
+        prixAchat: intValue("prixAchat"),
+        prixLivraison: intValue("prixLiv"),
+        prixExpedition: intValue("prixExp"),
+        estGros: false,
+        quantiteMinimumCommande: 1,
+        incrementQuantite: 1,
+        quantiteLimiteLivraison: Math.max(1, intValue("qtLimit", 1)),
+        quantiteLimiteExpedition: Math.max(1, intValue("qtLimitExp", 1))
+    }, allVariantPermissions);
+
+    if (!checked("venteParQuantiteSpecifique")) {
+        return [detailOption];
+    }
+
+    const unit = value("uniteVente") || "DOUZAINE";
+    const wholesaleOption = withVariantPermissions({
+        id: unit.toLowerCase(),
+        label: unitLabel(unit),
+        uniteVente: unit,
+        quantiteIncluse: Math.max(1, intValue("quantiteParUnite", unitDefaultQuantity(unit))),
+        prix: intValue("prixUniteVente"),
+        prixAchat: intValue("prixAchatUniteVente"),
+        prixLivraison: intValue("prixLivraisonUniteDeVente", intValue("prixLiv")),
+        prixExpedition: intValue("prixExpeditionUniteDeVente", intValue("prixExp")),
+        estGros: true,
+        quantiteMinimumCommande: Math.max(1, intValue("quantiteMinimumCommande", 1)),
+        incrementQuantite: Math.max(1, intValue("incrementQuantite", 1)),
+        quantiteLimiteLivraison: intValue("quantiteLimiteLivraisonUniteDeVente", 0) || null,
+        quantiteLimiteExpedition: intValue("quantiteLimiteExpeditionUniteDeVente", 0) || null
+    }, wholesaleVariantPermissions);
+
+    return checked("venteIndividuelleAutorisee")
+        ? [detailOption, wholesaleOption]
+        : [wholesaleOption];
+}
+
+function buildVariantPermissionMap({ forceAllowed = false } = {}) {
+    const entries = getVariantPermissionEntries();
+    if (!entries.length) return {};
+
+    const permissionByKey = new Map(
+        $$(".wholesale-variant-toggle").map((input) => [input.dataset.variantKey, input.checked])
+    );
+
+    return entries.reduce((permissions, entry) => {
+        permissions[entry.key] = forceAllowed ? true : (permissionByKey.has(entry.key) ? permissionByKey.get(entry.key) : true);
+        return permissions;
+    }, {});
+}
+
+function unitDefaultQuantity(raw) {
+    return {
+        PIECE: 1,
+        DOUZAINE: 12,
+        CENTAINE: 100,
+        MILLIER: 1000,
+        LOT_5: 5,
+        LOT_10: 10,
+        LOT_20: 20,
+        LOT_25: 25,
+        LOT_50: 50,
+        PAIRE: 2,
+        TRIO: 3,
+        PACK_6: 6
+    }[raw] || 1;
+}
+
 function buildNormalizedHashtags() {
+    const category = normalizeTag(value("categorie"));
     const vendor = normalizeTag(value("vendeur"));
     const seen = new Set();
     const list = [];
-    [...state.hashtags, vendor].forEach((tag) => {
+    [category, ...state.hashtags, vendor].forEach((tag) => {
         const normalized = normalizeTag(tag);
         if (normalized && !seen.has(normalized)) {
             seen.add(normalized);
@@ -1441,10 +1607,15 @@ function resetAfterPublish() {
 function clearImagesAndVariants() {
     state.images.forEach((image) => URL.revokeObjectURL(image.url));
     state.images = [];
+    imageInput.value = "";
+    clearVariants();
+    renderImages();
+}
+
+function clearVariants() {
     state.selectedSizes.clear();
     state.selectedColors.clear();
     $("#variant-list").innerHTML = "";
-    renderImages();
     renderSelectableChips("size-chips", getCurrentSizePreset(), state.selectedSizes);
     renderSelectableChips("color-chips", colors.map(([name]) => name), state.selectedColors, true);
 }

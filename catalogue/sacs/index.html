@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue sacs Yélim</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f5f7;
+            --ink: #0b0f16;
+            --muted: #667085;
+            --panel: #ffffff;
+            --line: #d9dee7;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        main {
+            width: min(920px, 100%);
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 850;
+            font-size: 22px;
+        }
+
+        .mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #050505;
+            color: white;
+        }
+
+        .hero {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(32px, 7vw, 58px);
+            line-height: 0.96;
+            letter-spacing: 0;
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.5;
+            margin: 12px 0 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .item {
+            min-height: 132px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item span {
+            font-size: 32px;
+            font-weight: 850;
+        }
+
+        .item strong {
+            font-size: 14px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            border: 1px solid #050505;
+            border-radius: 10px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #050505;
+            background: #fff;
+            font-weight: 780;
+        }
+
+        .btn.primary {
+            background: #050505;
+            color: #fff;
+        }
+
+        @media (max-width: 680px) {
+            header { align-items: flex-start; flex-direction: column; }
+            .grid { grid-template-columns: 1fr; }
+            .actions { grid-template-columns: 1fr; }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body { background: var(--bg); color: var(--ink); }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="brand"><span class="mark">Y</span> Yélim</div>
+            <a class="btn" href="/install/" data-store="auto">Télécharger l'app</a>
+        </header>
+
+        <section class="hero">
+            <h1>Sacs en gros sans relance interminable.</h1>
+            <p>Découvre les offres sacs, commande dans Yélim et suis l'évolution de ta commande. Catalogue web complet en préparation, accès app disponible maintenant.</p>
+            <p id="price-filter" hidden></p>
+
+            <div class="grid" aria-label="Avantages sacs en gros">
+                <div class="item"><span>01</span><strong>Catalogue varié</strong><p>Des modèles pour revente, boutique et commande en lot.</p></div>
+                <div class="item"><span>02</span><strong>Commande suivie</strong><p>Tu gardes une trace claire de l'état de ta commande.</p></div>
+                <div class="item"><span>03</span><strong>Réception rapide</strong><p>Moins d'allers-retours WhatsApp, plus d'action.</p></div>
+            </div>
+
+            <div class="actions">
+                <a class="btn primary" href="#" data-store="auto">Voir dans l'app</a>
+                <a class="btn" href="/promo/" id="promo-link">J'ai un code promo</a>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { bindStoreButtons, openStore, platform, populateCampaignText, trackCampaignClick } from "../../assets/campaign-tracking.js";
+
+        populateCampaignText();
+        bindStoreButtons();
+        trackCampaignClick("bags_catalog_page_view");
+
+        const query = new URLSearchParams(window.location.search);
+        const priceMax = query.get("priceMax");
+        const priceFilter = document.getElementById("price-filter");
+        const promoLink = document.getElementById("promo-link");
+        const detectedPlatform = platform();
+        const autoOpenKey = `yelim-bags-auto-open:${window.location.href}`;
+
+        if (priceMax && priceFilter) {
+            priceFilter.hidden = false;
+            priceFilter.textContent = `Filtre demandé : sacs avec logistique observée jusqu'à ${priceMax} F.`;
+        }
+
+        if (promoLink) {
+            promoLink.href = `/promo/${window.location.search}`;
+        }
+
+        if (
+            query.get("autoOpen") !== "0" &&
+            (detectedPlatform === "ios" || detectedPlatform === "android") &&
+            sessionStorage.getItem(autoOpenKey) !== "1"
+        ) {
+            sessionStorage.setItem(autoOpenKey, "1");
+            setTimeout(() => openStore("auto"), 650);
+        }
+    </script>
+</body>
+
+</html>

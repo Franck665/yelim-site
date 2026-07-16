@@ -1,97 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Télécharger Yélim</title>
     <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f5f7;
+            --ink: #0d1117;
+            --muted: #667085;
+            --line: #d9dee7;
+            --panel: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
-            background: #f0f2f5;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--ink);
         }
 
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
+        main {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
         }
 
-        .logo {
-            width: 100px;
-            height: 100px;
-            background: #007AFF;
-            border-radius: 22px;
-            margin-bottom: 1.5rem;
-            display: inline-flex;
+        .shell {
+            width: min(460px, 100%);
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+        }
+
+        .top {
+            display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .mark {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: #050505;
             color: white;
-            font-size: 3rem;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 800;
         }
 
         h1 {
-            margin-bottom: 0.5rem;
+            margin: 0;
+            font-size: 30px;
+            line-height: 1.05;
+            letter-spacing: 0;
         }
 
         p {
-            color: #65676b;
-            margin-bottom: 2rem;
+            margin: 8px 0 0;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        .offer {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 18px 0;
+            background: #fafafa;
+        }
+
+        .offer strong { color: #000; }
+
+        .actions {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .btn {
-            display: block;
-            background: #007AFF;
-            color: white;
+            border: 1px solid #050505;
+            border-radius: 10px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
-            padding: 1rem 2rem;
-            border-radius: 1rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            transition: opacity 0.2s;
+            font-weight: 750;
+            color: #050505;
+            background: white;
         }
 
-        .btn:active {
-            opacity: 0.8;
+        .btn.primary {
+            color: white;
+            background: #050505;
+        }
+
+        .hint {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 16px;
+        }
+
+        .manual { display: none; }
+        body.show-store-buttons .manual { display: grid; }
+
+        @media (prefers-color-scheme: dark) {
+            body { background: var(--bg); color: var(--ink); }
         }
     </style>
-    <script>
-        function redirect() {
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            var iosLink = "https://apps.apple.com/app/y%C3%A9lim/id6758163762";
-            var androidLink = "https://play.google.com/store/apps/details?id=com.s1.yelim";
-            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-            var isIPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-
-            if (isIOS || isIPadOS) {
-                window.location.href = iosLink;
-            } else if (/android/i.test(userAgent)) {
-                window.location.href = androidLink;
-            }
-        }
-        window.onload = redirect;
-    </script>
 </head>
 
 <body>
-    <div class="card">
-        <div class="logo">Y</div>
-        <h1>Yélim</h1>
-        <p>Redirection vers le store en cours...</p>
-        <a href="https://apps.apple.com/app/y%C3%A9lim/id6758163762" class="btn" id="ios-btn">App Store (iOS)</a>
-        <a href="https://play.google.com/store/apps/details?id=com.s1.yelim" class="btn" id="android-btn">Play Store
-            (Android)</a>
-    </div>
+    <main>
+        <section class="shell">
+            <div class="top">
+                <div class="mark">Y</div>
+                <div>
+                    <h1>Yélim</h1>
+                    <p>Achats, livraison à Ouaga et expéditions en province.</p>
+                </div>
+            </div>
+
+            <div class="offer">
+                <strong data-campaign-location>Offre spéciale</strong>
+                <p>Télécharge l'app et commande directement depuis ton téléphone.</p>
+                <p data-code-wrap hidden>Code à utiliser : <strong data-campaign-code></strong></p>
+            </div>
+
+            <div class="actions">
+                <a class="btn primary" href="#" data-store="auto">Ouvrir le bon store</a>
+                <div class="actions manual">
+                    <a class="btn" href="#" data-store="ios">App Store</a>
+                    <a class="btn" href="#" data-store="android">Play Store</a>
+                </div>
+            </div>
+
+            <p class="hint">Si la redirection ne démarre pas, choisis ton store.</p>
+        </section>
+    </main>
+
+    <script type="module">
+        import { bindStoreButtons, openStore, populateCampaignText, trackCampaignClick } from "../assets/campaign-tracking.js";
+
+        populateCampaignText();
+        bindStoreButtons();
+        trackCampaignClick("install_page_view");
+
+        setTimeout(() => {
+            openStore("auto");
+        }, 900);
+    </script>
 </body>
 
 </html>

@@ -46,6 +46,7 @@
             </a>
             <nav class="section-nav" aria-label="Sections du formulaire">
                 <a href="/admin/articles/" class="nav-item">Articles</a>
+                <a href="/admin/campaign-monitor/" class="nav-item">Monitoring</a>
                 <a href="#images" class="nav-item active">Images</a>
                 <a href="#infos" class="nav-item">Infos</a>
                 <a href="#prix-stock" class="nav-item">Prix & stock</a>
@@ -328,6 +329,13 @@
                                 <label>Libellé prix unitaire<input id="libellePrixUnitaire" type="text"></label>
                                 <label>Informations quantité<input id="informationsQuantite" type="text"></label>
                             </div>
+                            <div id="wholesale-variant-rules" class="variant-permissions" hidden>
+                                <div class="field-row compact">
+                                    <h3>Variantes autorisées en gros</h3>
+                                    <span class="helper-text">Décoche une variante si le client ne peut pas la choisir pour l'option en gros.</span>
+                                </div>
+                                <div id="wholesale-variant-rule-list" class="toggle-grid compact"></div>
+                            </div>
                         </div>
                         <div class="grid two">
                             <label>Réductions<input id="reductions" type="text" placeholder="2 to 100, 5 to 200"></label>
@@ -417,7 +425,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-    <script src="./app.js"></script>
+    <script src="./app.js?v=20260624-image-selection-fix"></script>
 </body>
 
 </html>

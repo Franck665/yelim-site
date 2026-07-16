@@ -16,7 +16,20 @@
       "cursorrules",
       "generate_app_pages.py"
     ],
+    "headers": [
+      {
+        "source": "/admin/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
+    ],
     "rewrites": [
+      { "source": "/article", "function": "articleSharePreview", "region": "us-central1" },
+      { "source": "/article/**", "function": "articleSharePreview", "region": "us-central1" },
       { "source": "/auth/action", "destination": "/auth/action.html" },
       { "source": "/affiliates-privacy.html", "destination": "/legal/affiliates-privacy.html" },
       { "source": "/affiliates-terms.html", "destination": "/legal/affiliates-terms.html" }

@@ -428,7 +428,7 @@ async function saveEdit(event) {
             lienVideo: value("edit-lienVideo"),
             desc: value("edit-desc"),
             specification: value("edit-specification"),
-            hashtags: parseTags(value("edit-hashtags"), value("edit-vendeur")),
+            hashtags: parseTags(value("edit-hashtags"), value("edit-vendeur"), value("edit-categorie")),
             prix: intValue("edit-prix"),
             prixAchat: intValue("edit-prixAchat"),
             prixNonReduit: intValue("edit-prixNonReduit"),
@@ -573,9 +573,10 @@ function canvasToBlob(canvas, type, quality) {
     return new Promise((resolve) => canvas.toBlob(resolve, type, quality));
 }
 
-function parseTags(text, vendor) {
+function parseTags(text, vendor, category) {
     const seen = new Set();
     const tags = text.split(",").map((tag) => normalizeTag(tag)).filter(Boolean);
+    tags.push(normalizeTag(category));
     tags.push(normalizeTag(vendor));
     return tags.filter((tag) => {
         if (!tag || seen.has(tag)) return false;

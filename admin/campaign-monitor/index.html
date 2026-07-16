@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring campagnes | Yélim Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../publier-article/styles.css">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div id="auth-screen" class="auth-screen">
+        <section class="auth-panel">
+            <div class="brand-mark">Y</div>
+            <h1>Yélim Admin</h1>
+            <p>Connecte-toi pour suivre les clics de campagne.</p>
+            <form id="login-form" class="auth-form">
+                <label>Email<input id="login-email" type="email" autocomplete="email" required></label>
+                <label>Mot de passe<input id="login-password" type="password" autocomplete="current-password" required></label>
+                <button class="primary-button" type="submit">
+                    <span>Se connecter</span>
+                    <span class="button-loader" aria-hidden="true"></span>
+                </button>
+                <p id="login-error" class="form-error" hidden></p>
+            </form>
+        </section>
+    </div>
+
+    <div id="app-shell" class="app-shell monitor-shell" hidden>
+        <aside class="sidebar">
+            <a class="sidebar-brand" href="/">
+                <span class="brand-mark small">Y</span>
+                <span>
+                    <strong>Yélim</strong>
+                    <small>Monitoring</small>
+                </span>
+            </a>
+            <nav class="section-nav" aria-label="Navigation admin">
+                <a href="/admin/publier-article/" class="nav-item">Publier</a>
+                <a href="/admin/articles/" class="nav-item">Articles</a>
+                <a href="/admin/campaign-monitor/" class="nav-item active">Monitoring</a>
+            </nav>
+            <button id="logout-button" class="ghost-button" type="button">Déconnexion</button>
+        </aside>
+
+        <main class="workspace">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Acquisition</p>
+                    <h1>Suivi des clics campagne</h1>
+                </div>
+                <button id="refresh-button" class="secondary-button" type="button">Actualiser</button>
+            </header>
+
+            <section class="monitor-toolbar panel">
+                <label>
+                    Période
+                    <select id="period-select">
+                        <option value="1">24 h</option>
+                        <option value="7" selected>7 jours</option>
+                        <option value="30">30 jours</option>
+                        <option value="90">90 jours</option>
+                    </select>
+                </label>
+                <label>
+                    Segment
+                    <select id="segment-select">
+                        <option value="ALL">Tous</option>
+                        <option value="OUAGA">Ouaga</option>
+                        <option value="EXPEDITION">Expéditions</option>
+                        <option value="BULK_BAG">Sacs</option>
+                    </select>
+                </label>
+                <label>
+                    Recherche
+                    <input id="search-input" type="search" placeholder="contact, ville, cible, code...">
+                </label>
+            </section>
+
+            <section class="metrics-grid" id="metrics-grid"></section>
+
+            <section class="monitor-grid">
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <p class="eyebrow">Répartition</p>
+                            <h2>Segments et plateformes</h2>
+                        </div>
+                    </div>
+                    <div id="breakdown-list" class="breakdown-list"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <p class="eyebrow">Intentions</p>
+                            <h2>Cibles cliquées</h2>
+                        </div>
+                    </div>
+                    <div id="target-list" class="breakdown-list"></div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-head">
+                    <div>
+                        <p class="eyebrow">Historique</p>
+                        <h2>Derniers clics</h2>
+                    </div>
+                    <p id="status-text" class="helper-text"></p>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Contact</th>
+                                <th>Segment</th>
+                                <th>Ville / quartier</th>
+                                <th>Plateforme</th>
+                                <th>Cible</th>
+                                <th>Code</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clicks-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
