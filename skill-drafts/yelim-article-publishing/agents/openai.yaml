@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publication d’articles Yelim"
+  short_description: "Préparer, traiter et publier les articles Yelim"
+  default_prompt: "Utilise $yelim-article-publishing pour préparer et publier ce lot d’articles Yelim en toute sécurité."
